@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+    <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="panel-title">Contacts</h3>
+        <a href="#" class="btn btn-success">New Contact</a>
+    </div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li *ngFor="let c of contacts" class="list-group-item" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>
+                    {{ c.name }}
+                </span>
+                <img [src]="c.imageUrl" [alt]="c.name">
+            </li>
+
+        </ul>
+    </div>
+</div>
