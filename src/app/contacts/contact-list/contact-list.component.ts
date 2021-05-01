@@ -12,14 +12,14 @@ export class ContactListComponent implements OnInit {
     name: 'R. Kent Jackson',
     email: 'jacksonk@byui.edu',
     phone: '208-496-3771',
-    imageUrl: 'https://web.byui.edu/Directory/Employee/jacksonk.jpg',
+    imageUrl: '/assets/images/jacksonk.jpg',
     group: null
   },{
     id: 2,
     name: 'Rex Barzee',
     email: 'barzeer@byui.edu',
     phone: '208-496-3768',
-    imageUrl: 'https://web.byui.edu/Directory/Employee/barzeer.jpg',
+    imageUrl: '/assets/images/barzeer.jpg',
     group: null
   }];
 
