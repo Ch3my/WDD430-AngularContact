@@ -5,13 +5,7 @@
     </div>
     <div class="panel-body">
         <ul class="list-group">
-            <li *ngFor="let c of contacts" class="list-group-item" style="display: flex; justify-content: space-between; align-items: center;">
-                <span>
-                    {{ c.name }}
-                </span>
-                <img [src]="c.imageUrl" [alt]="c.name" class="img-responsive" style="max-height: 100px;">
-            </li>
-
+            <cms-contact-item *ngFor="let c of contacts" [contact]="c" (click)="onSelected(c)"></cms-contact-item>
         </ul>
     </div>
 </div>
