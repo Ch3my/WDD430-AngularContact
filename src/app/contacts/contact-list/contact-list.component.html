@@ -1,11 +1,11 @@
 <div class="panel panel-default">
     <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
         <h3 class="panel-title">Contacts</h3>
-        <a href="#" class="btn btn-success">New Contact</a>
+        <a href="#" class="btn btn-success" routerLink="new">New Contact</a>
     </div>
     <div class="panel-body">
         <ul class="list-group">
-            <cms-contact-item *ngFor="let c of contacts" [contact]="c" (click)="onSelected(c)"></cms-contact-item>
+            <cms-contact-item *ngFor="let c of contacts" [contact]="c" routerLink="{{c.id}}"></cms-contact-item>
         </ul>
     </div>
 </div>
