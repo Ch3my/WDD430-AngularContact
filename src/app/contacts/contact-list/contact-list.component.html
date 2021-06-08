@@ -5,7 +5,8 @@
     </div>
     <div class="panel-body">
         <ul class="list-group">
-            <cms-contact-item *ngFor="let c of contacts" [contact]="c" routerLink="{{c.id}}"></cms-contact-item>
+            <cms-contact-item *ngFor="let c of contacts" [contact]="c" routerLink="{{c.id}}"
+            dnd-draggable [dragEnabled]="true" [dragData]="c" [dropZones]="['contactGroup']"></cms-contact-item>
         </ul>
     </div>
 </div>
