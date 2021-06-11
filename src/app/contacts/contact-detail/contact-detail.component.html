@@ -16,4 +16,15 @@
         <p><b>Email:</b> {{ contact.email }}</p>
         <p><b>Phone:</b> {{ contact.phone }}</p>
     </div>
+
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="groupList">Group Contacts:</label>
+            <div *ngFor="let contact of contact.group; let i = index">
+                <div>
+                    <cms-contact-item class="col-sm-11" [contact]="contact"></cms-contact-item>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

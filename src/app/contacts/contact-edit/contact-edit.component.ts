@@ -15,6 +15,7 @@ export class ContactEditComponent implements OnInit {
   groupContacts: Contact[] = [];
   editMode: boolean = false;
   id: string;
+  flagInvalidContact: boolean = false
 
   constructor(private contactService: ContactService, private router: Router, private route: ActivatedRoute) { }
 
@@ -49,7 +50,7 @@ export class ContactEditComponent implements OnInit {
   onSubmit(form: NgForm) {
     // Read the form
     const value = form.value
-    const newContact = new Contact(this.originalContact?.id, value.name, value.email, value.phone, value.imageUrl, this.originalContact?.group)
+    const newContact = new Contact(null, value.name, value.email, value.phone, value.imageUrl, this.groupContacts)
 
     // Edit if edit or new by default
     if (this.editMode == true) {
@@ -79,27 +80,35 @@ export class ContactEditComponent implements OnInit {
   }
 
   isInvalidContact(newContact: Contact) {
-		if (!newContact) {
-			return true;
-		}
+    if (!newContact) {
+      return true;
+    }
 
     // Check if editing. Otherwise this.contact is undefined
-		// If the contact being draged is the same of the contact we are at
-    if(this.editMode){
+    // If the contact being draged is the same of the contact we are at
+    if (this.editMode) {
       if (newContact.id === this.contact.id) {
+        this.flagInvalidContact = true
+        setTimeout(() => {
+          this.flagInvalidContact = false
+        }, 2000)
         return true;
       }
     }
 
-		for (let i = 0; i < this.groupContacts.length; i++) {
-			// Check if the contact being dragged already exists
-			if (newContact.id === this.groupContacts[i].id) {
-				//is INVALID
-				return true;
-			}
-		}
+    for (let i = 0; i < this.groupContacts.length; i++) {
+      // Check if the contact being dragged already exists
+      if (newContact.id === this.groupContacts[i].id) {
+        //is INVALID
+        this.flagInvalidContact = true
+        setTimeout(() => {
+          this.flagInvalidContact = false
+        }, 2000)
+        return true;
+      }
+    }
 
-		//if passes all tests, we are OK
-		return false;
-	}
+    //if passes all tests, we are OK
+    return false;
+  }
 }

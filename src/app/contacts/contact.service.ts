@@ -8,7 +8,7 @@ import { Subject } from 'rxjs'
 })
 export class ContactService {
   contacts: Contact[] = []
-  maxDocumentId: number
+  maxContactId: number
 
   contactSelectedEvent = new EventEmitter<Contact>()
   contactChangedEvent = new EventEmitter<Contact[]>()
@@ -17,6 +17,7 @@ export class ContactService {
 
   constructor() {
     this.contacts = MOCKCONTACTS
+    this.maxContactId = this.getMaxId();
   }
 
   getContacts(): Contact[] {
@@ -55,8 +56,8 @@ export class ContactService {
     if (!newContact) {
       return
     }
-    this.maxDocumentId++
-    newContact.id = this.maxDocumentId.toString()
+    this.maxContactId++
+    newContact.id = this.maxContactId.toString()
     this.contacts.push(newContact)
     let contactsListClone = this.contacts.slice()
     this.contactListChangedEvent.next(contactsListClone)

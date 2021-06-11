@@ -46,6 +46,10 @@
           <div class="row" id="groupList" style="min-height: 3rem;" dnd-droppable [dropZones]="['contactGroup']"
             (onDropSuccess)="addToGroup($event)">
 
+            <div class="alert alert-danger" *ngIf="flagInvalidContact" style="margin: 0 auto;width: 80%;">
+              Cannot add this contact to this group
+            </div>
+
             <div *ngFor="let contact of groupContacts; let i = index">
               <div>
                 <cms-contact-item class="col-sm-11" [contact]="contact"></cms-contact-item>
