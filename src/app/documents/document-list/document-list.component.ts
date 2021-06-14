@@ -17,9 +17,10 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     this.documentService.documentChangedEvent.subscribe(
       (documents: Document[]) => {
         this.documents = documents;
-      }
-    )
-    this.documents = this.documentService.getDocuments()
+      })
+    // No asignamos la variable directo sino a traves de la subscripcion 
+    this.documentService.getDocuments()
+    // this.documents = this.documentService.getDocuments()
 
     this.subscription = this.documentService.documentListChangedEvent.subscribe((documentsList: Document[]) => {
       this.documents = documentsList

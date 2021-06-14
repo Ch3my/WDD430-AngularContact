@@ -12,6 +12,7 @@ export class ContactListComponent implements OnInit {
 
   contacts: Contact[] = [];
   subscription: Subscription
+  term: string
 
   // Inicializamos el Servicio usnado Angular
   constructor(private contactService: ContactService) { }
@@ -23,7 +24,8 @@ export class ContactListComponent implements OnInit {
       (contact: Contact[]) => {
         this.contacts = contact
       })
-    this.contacts = this.contactService.getContacts()
+    // this.contacts = this.contactService.getContacts()
+    this.contactService.getContacts()
 
     this.subscription = this.contactService.contactListChangedEvent.subscribe((contactsList: Contact[]) => {
       this.contacts = contactsList
@@ -35,5 +37,9 @@ export class ContactListComponent implements OnInit {
     // Emitimos Evento
     // this.selectedContactEvent.emit(contact)
     this.contactService.contactSelectedEvent.emit(contact);
+  }
+
+  search(value: string) {
+    this.term = value;
   }
 }

@@ -1,21 +1,42 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
+// import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { Message } from './message.model'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subject } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
   messages: Message[] = []
-  messageSelectedEvent = new EventEmitter<Message>()
-  messageChangedEvent = new EventEmitter<Message[]>()
+  // messageSelectedEvent = new EventEmitter<Message>()
+  // messageChangedEvent = new EventEmitter<Message[]>()
+  messageListChangedEvent = new Subject<Message[]>();
+  maxMessageid: number
 
-  constructor() {
-    this.messages = MOCKMESSAGES
+  constructor(private http: HttpClient) { }
+
+  getMaxId(): number {
+    let maxId = 0
+    for (let d of this.messages) {
+      let currentId = parseInt(d.id)
+      if (currentId > maxId) {
+        maxId = currentId
+      }
+    }
+    return maxId
   }
 
-  getMessages(): Message[] {
-    return this.messages.slice()
+  getMessages() {
+    this.http.get<Message[]>('https://wdd430-4fd0c-default-rtdb.firebaseio.com/messages.json').subscribe(
+      (messages: Message[]) => {
+        this.messages = messages
+        this.maxMessageid = this.getMaxId()
+
+        this.messageListChangedEvent.next(this.messages.slice());
+      }, (error: any) => {
+        console.log(error);
+      })
   }
 
   getMessage(id: string): Message {
@@ -24,6 +45,19 @@ export class MessageService {
 
   addMessage(message: Message) {
     this.messages.push(message)
-    this.messageChangedEvent.emit(this.messages.slice())
+    // this.messageChangedEvent.emit(this.messages.slice())
+    this.storeMessages()
   }
+
+  storeMessages() {
+    let messages = JSON.stringify(this.messages)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    this.http.put('https://wdd430-4fd0c-default-rtdb.firebaseio.com/messages.json', messages, { headers: headers })
+      .subscribe(() => {
+        this.messageListChangedEvent.next(this.messages.slice());
+      })
+  }
+
 }
