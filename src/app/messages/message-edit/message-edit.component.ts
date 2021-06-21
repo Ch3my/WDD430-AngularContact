@@ -9,7 +9,7 @@ import { MessageService } from '../message.service';
 })
 export class MessageEditComponent implements OnInit {
   // ID que corresponde a un registro en MOCKCONTACTS
-  currentSender = '1'
+  currentSender = '101'
   // Leemos elementos de HTML
   @ViewChild('subject', { static: true }) subject: ElementRef
   @ViewChild('msgText', { static: true }) msgText: ElementRef
@@ -21,7 +21,7 @@ export class MessageEditComponent implements OnInit {
   ngOnInit(): void {
   }
   onSendMessage() {
-    var msg = new Message('1', this.subject.nativeElement.value, this.msgText.nativeElement.value, this.currentSender)
+    var msg = new Message('1', this.subject.nativeElement.value, this.msgText.nativeElement.value, {id :this.currentSender})
     this.messageService.addMessage(msg)
   }
   onClear() {

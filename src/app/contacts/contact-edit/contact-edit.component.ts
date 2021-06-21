@@ -29,21 +29,21 @@ export class ContactEditComponent implements OnInit {
           return;
         }
 
-        this.originalContact = this.contactService.getContact(id);
-        // this.contactService.getContact(id)
-        //   .subscribe(contactData => {
-        //     this.originalContact = contactData.contact;
-        //   })
+        // this.originalContact = this.contactService.getContact(id);
+        this.contactService.getContact(id)
+          .subscribe(contactData => {
+            // if (!this.originalContact) {
+            //   return;
+            // }
 
-        if (!this.originalContact) {
-          return;
-        }
-
-        this.editMode = true;
-        this.contact = JSON.parse(JSON.stringify(this.originalContact));
-        if (this.contact.group !== null && this.contact.group !== undefined) {
-          this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
-        }
+            this.originalContact = contactData;
+            
+            this.editMode = true;
+            this.contact = JSON.parse(JSON.stringify(this.originalContact));
+            if (this.contact.group !== null && this.contact.group !== undefined) {
+              this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
+            }
+          })
       })
   }
 
@@ -62,6 +62,7 @@ export class ContactEditComponent implements OnInit {
     } else {
       this.contactService.addContact(newContact);
     }
+    console.log("Navegamos")
     this.router.navigate(['/contacts'], { relativeTo: this.route });
   }
 

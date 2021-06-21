@@ -28,7 +28,7 @@ export class MessageService {
   }
 
   getMessages() {
-    this.http.get<Message[]>('https://wdd430-4fd0c-default-rtdb.firebaseio.com/messages.json').subscribe(
+    this.http.get<Message[]>('http://localhost:3000/messages').subscribe(
       (messages: Message[]) => {
         this.messages = messages
         this.maxMessageid = this.getMaxId()
@@ -44,9 +44,26 @@ export class MessageService {
   }
 
   addMessage(message: Message) {
-    this.messages.push(message)
+    // this.messages.push(message)
     // this.messageChangedEvent.emit(this.messages.slice())
-    this.storeMessages()
+    // this.storeMessages()
+
+    this.http.post('http://localhost:3000/messages/', message)
+      .subscribe(
+        (response: { message: string, newMessage: Message, senderId: string }) => {
+          var messageForView = new Message(
+            response.newMessage.id,
+            message.subject,
+            message.msgText,
+            { id: response.senderId }
+          )
+          
+          console.log(messageForView)
+
+          this.messages.push(messageForView)
+          this.messageListChangedEvent.next(this.messages.slice());
+        });
+
   }
 
   storeMessages() {
@@ -54,7 +71,7 @@ export class MessageService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     })
-    this.http.put('https://wdd430-4fd0c-default-rtdb.firebaseio.com/messages.json', messages, { headers: headers })
+    this.http.put('http://localhost:3000/messages', messages, { headers: headers })
       .subscribe(() => {
         this.messageListChangedEvent.next(this.messages.slice());
       })

@@ -16,15 +16,17 @@ export class MessageItemComponent implements OnInit {
   constructor(private contactService: ContactService) { }
 
   ngOnInit(): void {
+    // console.log(this.message)
     // load contacts on memory first
     this.contactService.contactListChangedEvent.subscribe(
       (contact: Contact[]) => {
-        console.log(this.message.sender)
-        this.messageSender = this.contactService.getContact(this.message.sender).name
+        // console.log(this.message.sender)
+        // this.messageSender = this.contactService.getContact(this.message.sender).name
+         this.contactService.getContact(this.message.sender.id).subscribe(contactData => {
+          this.messageSender = contactData.name;
+        })
       })
-    // this.contacts = this.contactService.getContacts()
     this.contactService.getContacts()
-    // this.messageSender = this.contactService.getContact(this.message.sender).name
   }
 
 }

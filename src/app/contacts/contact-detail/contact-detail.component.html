@@ -3,8 +3,8 @@
         <h3 class="panel-title"></h3>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h4>{{contact.name}}</h4>
-                <img [src]="contact.imageUrl" [alt]="contact.name" style="max-height: 100px;">
+                <h4>{{contact?.name}}</h4>
+                <img [src]="contact?.imageUrl" [alt]="contact?.name" style="max-height: 100px;">
             </div>
             <div style="display: grid; gap: 5px; grid-template-columns: auto auto;">
                 <button class="btn btn-primary" routerLink="edit">Edit</button>
@@ -13,14 +13,14 @@
         </div>
     </div>
     <div class="panel-body">
-        <p><b>Email:</b> {{ contact.email }}</p>
-        <p><b>Phone:</b> {{ contact.phone }}</p>
+        <p><b>Email:</b> {{ contact?.email }}</p>
+        <p><b>Phone:</b> {{ contact?.phone }}</p>
     </div>
 
     <div class="panel-body">
         <div class="form-group">
             <label for="groupList">Group Contacts:</label>
-            <div *ngFor="let contact of contact.group; let i = index">
+            <div *ngFor="let contact of contact?.group; let i = index">
                 <div>
                     <cms-contact-item class="col-sm-11" [contact]="contact"></cms-contact-item>
                 </div>

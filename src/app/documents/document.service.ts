@@ -19,7 +19,7 @@ export class DocumentService {
   constructor(private http: HttpClient) { }
 
   getDocuments() {
-    this.http.get<Document[]>('https://wdd430-4fd0c-default-rtdb.firebaseio.com/documents.json').subscribe(
+    this.http.get<Document[]>('http://localhost:3000/documents').subscribe(
       // success method
       (documents: Document[]) => {
         this.documents = documents
@@ -27,13 +27,13 @@ export class DocumentService {
         // sort the list of documents
         this.documents.sort((a, b) => {
           if (a.name > b.name) {
-              return 1;
+            return 1;
           }
           if (b.name > a.name) {
-              return -1;
+            return -1;
           }
           return 0;
-      })
+        })
         // emit the next document list change event
         this.documentListChangedEvent.next(this.documents.slice());
       }, (error: any) => {
@@ -62,10 +62,17 @@ export class DocumentService {
     }
     this.maxDocumentId++
     newDocument.id = this.maxDocumentId.toString()
-    this.documents.push(newDocument)
+    // this.documents.push(newDocument)
     // let documentsListClone = this.documents.slice()
     // this.documentListChangedEvent.next(documentsListClone)
-    this.storeDocuments()
+    // this.storeDocuments()
+
+    this.http.post('http://localhost:3000/documents/', newDocument)
+    .subscribe(
+      (response: { message: string, document: Document }) => {
+        this.documents.push(response.document)
+        this.documentListChangedEvent.next(this.documents.slice());
+      });
 
   }
 
@@ -88,14 +95,24 @@ export class DocumentService {
     if (!document) {
       return
     }
-    let pos = this.documents.indexOf(document)
+    const pos = this.documents.findIndex(d => d.id === document.id);
+
     if (pos < 0) {
       return
     }
-    this.documents.splice(pos, 1)
+    // this.documents.splice(pos, 1)
     // let documentsListClone = this.documents.slice()
     // this.documentListChangedEvent.next(documentsListClone)
-    this.storeDocuments()
+    // this.storeDocuments()
+
+    this.http.delete('http://localhost:3000/documents/' + document.id)
+      .subscribe(
+        (response: Response) => {
+          this.documents.splice(pos, 1);
+          this.documentListChangedEvent.next(this.documents.slice());
+          // this.sortAndSend();
+          // Update Client?
+        });
   }
 
   storeDocuments() {
@@ -104,7 +121,7 @@ export class DocumentService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     })
-    this.http.put('https://wdd430-4fd0c-default-rtdb.firebaseio.com/documents.json', documents, { headers: headers })
+    this.http.put('http://localhost:3000/documents', documents, { headers: headers })
       .subscribe(() => {
         this.documentListChangedEvent.next(this.documents.slice());
       })

@@ -20,16 +20,16 @@ export class ContactListComponent implements OnInit {
   ngOnInit(): void {
     // Llenamos nuestro Array desde el servicio
     // getContacts() clona el objeto, porque?
-    this.contactService.contactChangedEvent.subscribe(
-      (contact: Contact[]) => {
-        this.contacts = contact
-      })
+    // this.contactService.contactChangedEvent.subscribe(
+    //   (contact: Contact[]) => {
+    //     this.contacts = contact
+    //   })
     // this.contacts = this.contactService.getContacts()
-    this.contactService.getContacts()
 
     this.subscription = this.contactService.contactListChangedEvent.subscribe((contactsList: Contact[]) => {
       this.contacts = contactsList
     })
+    this.contactService.getContacts()
 
   }
 

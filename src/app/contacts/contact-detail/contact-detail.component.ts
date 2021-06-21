@@ -10,7 +10,7 @@ import { ContactService } from '../contact.service';
 })
 export class ContactDetailComponent implements OnInit {
   // @Input() contact: Contact;
-  contact: Contact;
+  contact: Contact
 
   constructor(private contactService: ContactService,
     private route: ActivatedRoute,
@@ -19,11 +19,12 @@ export class ContactDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
-        this.contact = this.contactService.getContact(params.id)
-        // this.contactService.getContact(params.id)
-        //   .subscribe(contactData => {
-        //     this.contact = contactData.contact;
-        //   })
+        // this.contact = this.contactService.getContact(params.id)
+
+        this.contactService.getContact(params.id)
+          .subscribe(contactData => {
+            this.contact = contactData;
+          })
       }
     )
   }
@@ -31,7 +32,6 @@ export class ContactDetailComponent implements OnInit {
   deleteContact() {
     this.contactService.deleteContact(this.contact)
     this.router.navigate(['/contacts'], { relativeTo: this.route });
-
   }
 
 }
