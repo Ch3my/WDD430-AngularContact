@@ -88,7 +88,14 @@ export class DocumentService {
     this.documents[pos] = newDocument
     // let documentsListClone = this.documents.slice()
     // this.documentListChangedEvent.next(documentsListClone)
-    this.storeDocuments()
+    // this.storeDocuments()
+    this.http.put('http://localhost:3000/documents/' + originalDocument.id, newDocument)
+    .subscribe(
+      (response: Response) => {
+        this.documents[pos] = newDocument;
+        // this.contacts.push(response.contact)
+        this.documentListChangedEvent.next(this.documents.slice());
+      });
   }
 
   deleteDocument(document: Document) {

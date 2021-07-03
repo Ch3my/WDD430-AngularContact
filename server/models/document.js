@@ -12,7 +12,8 @@ let documentSchema = new Schema({
   },
   url: {
     type: String
-  }
+  },
+  children: { type: [{ id: String, name: String, url: String }] }
 });
 
 module.exports = mongoose.model('Document', documentSchema);
